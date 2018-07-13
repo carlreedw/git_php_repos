@@ -1,0 +1,33 @@
+.mainContainer {
+	padding: 20px 20%;
+}
+
+.topRow {
+	padding: 20px;
+	min-width: 500px;
+}
+
+/* .topRow * { */
+	/* display: inline; */
+/* } */
+
+/* .topRow #button1 { */
+	/* float:left; */
+/* } */
+
+.topRow #button2 {
+	float:right;
+}
+
+#mainContent {
+	font-size: 10px;
+}
+
+.collapsible{
+	font-size: 1.25em;
+	min-width: 500px;
+}
+
+.collapsible .collapsible-body *{
+	display: block;
+}

@@ -1,7 +1,7 @@
 <?php
 	// set these if you're behind a proxy
-	define("PROXY_IP", '255.255.255.255');
-	define("PROXY_PORT", 1234);
+	// define("PROXY_IP", '255.255.255.255');
+	// define("PROXY_PORT", 1234);
 	
 	include('../includes/send_card.php');
 	

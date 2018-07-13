@@ -20,7 +20,7 @@
 
 The tool consists of some client code (html, css, and javascript) that makes calls to files hosted on a web server (php and html).
 
-The server queries the GitHub API's repository endpoint: 'https://api.github.com/search/repositories' for individual repo information.
+The server queries the GitHub API's search/repositories endpoint: 'https://api.github.com/search/repositories' for repository information.
 
 The server stores the information in a MySQL database. Then it can retrieve that information to create HTML to send to the client.
 
@@ -65,18 +65,18 @@ The `materialize` and `css` folders help with presentation of the tool. They all
 	
 `includes/refresh_client.php` does two things in sequence:
 
-1. Creates and queries the `repositories` table for repository information.
-2. Iterates through each repository item received and outputs html to return to the client.
+1. Queries the `repositories` table for repository information.
+2. Iterates through the repository data received and outputs HTML to return to the client.
 
-`includes/sample_output.txt` was used during development to avoid excessive API calls, and is retained in this repository in the case that users would like to run the tool without access to GitHub's servers.
+`includes/sample_output.txt` was used during development to avoid excessive API calls, and is retained in this repository in the case that users would like to test the client interface without access to GitHub's servers.
 
-`includes/debug.log` is overwritten everytime `refresh_database.php` is executed. It contains helpful development information about success/failure of connecting to the MySQL database and cURL execution of the API query.
+`includes/debug.log` is overwritten everytime `refresh_database.php` is executed. It contains helpful development information about success/failure of connecting to the MySQL database and cURL execution of the API query and the like.
 
 `includes/make_repos_table.sql` is used in `refresh_database.php` to build the `repositories` table.
 
 `includes/send_card.php` is included in `refresh_database.php` and `refresh_client.php`. It creates a `Materialize` card with a message on what the server encountered.
 
-Finally, `index.php` is page served to the client initially that allows them to make calls via `requestor.js` to refresh the database or the client.
+Finally, `index.php` is page served to the client initially that allows them to make calls via `requestor.js` to refresh the database or the client via interface buttons.
 
 # Routing diagram
 
@@ -102,11 +102,11 @@ ROUTE B (respectively):
 
 	OR
 
-* Server either sends an explanation of why the database can't be refreshed or "Database refreshed!" message to the client. Javascript on the client loads message into the `#mainContent` element.
+* Server either sends a server information message or "Database refreshed!" message to the client. Javascript on the client loads message into the `#mainContent` element
 
 	OR
 
-* Server sends a "No repositories in database." message, or HTTP response that presents the repository information retrieved from the MySQL database. Javascript on the client loads response presentation into the `#mainContent` element.
+* Server sends a server information message or HTTP response that presents the repository information retrieved from the MySQL database. Javascript on the client loads repository list items into the `#mainContent` element
 
 ROUTE 1:
 
@@ -114,7 +114,7 @@ ROUTE 1:
 
 ROUTE 2:
 
-* GitHub responds to ROUTE 1 request with error or encoded repository data
+* GitHub responds to ROUTE 1 request with encoded repository data
 
 ROUTE 3:
 
@@ -122,7 +122,7 @@ ROUTE 3:
 
 ROUTE 4:
 
-* MySQL returns an error or our database results that we retrieve via the `mysqli_fetch_array` PHP function
+* MySQL returns our database results that we retrieve via the `mysqli_fetch_array` PHP function and create repository list items with
 
 # How to install
 
@@ -136,7 +136,7 @@ Install and configure your web server
 
 3. Once you've instanciated Apache on your system you can click "Start" and then "Stop" under "Actions" in the Control Panel to start and stop the server respectively.
 
-4. **NOTE:** You may need to configure a port other than 80 to start/instanciate Apache. To do this, click `Config > Apache (httpd.conf)`. In the `httpd.conf` file, search for `Listen 80` and `ServerName localhost:80`. Replace `80` with a port of your choice in both places.
+4. **NOTE:** You may need to configure a port other than `80` to start/instanciate Apache. To do this, click `Config > Apache (httpd.conf)`. In the `httpd.conf` file, search for `Listen 80` and `ServerName localhost:80`. Replace `80` with a port of your choice in both places.
 
 5. Place the unzipped `git_php_repos` folder into the public access folder of your web server. E.g., "htdocs", "Sites" -- the exact folder location depends on your particular web server.
 
@@ -146,7 +146,7 @@ Install and configure your web server
 	
 Create and configure your MySQL server instance
 
-1. This tool is designed to use a MySQL server available through the localhost address/hostname. If you've installed XAMPP, you can create the server instance by clicking the red X button under "Service" in the Modules section of the XMAPP Control Panel
+1. This tool is designed to use a MySQL server available through the localhost address/hostname. If you've installed XAMPP, you can create the server instance by clicking the red `X` button under "Service" in the Modules section of the XMAPP Control Panel
 
 2. After you've instanciated your server and started the service associated with it, create a database on the server by going to `localhost/phpmyadmin` control panel in your favorite browser.
 
@@ -154,9 +154,7 @@ Create and configure your MySQL server instance
 
 4. The sidebar will automatically refresh and you should see `git_php_repos` listed under "New" in the sidebar. This signifies that your database is created. You do not need to create any tables in the database.
 
-If you are behind a proxy, you will need to edit `refresh_database.php`
-
-* See lines 3-4.
+If you are behind a proxy, you will need to edit lines 3-4 in `refresh_database.php`
 
 1. In `define("PROXY_IP", '255.255.255.255');` -- change `255.255.255.255` to the IP address of your proxy server.
 

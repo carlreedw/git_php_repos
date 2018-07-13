@@ -1,7 +1,7 @@
 <?php
 	// set these if you're behind a proxy
-	define("PROXY_IP", '135.28.13.11');
-	define("PROXY_PORT", 8080);
+	define("PROXY_IP", '255.255.255.255');
+	define("PROXY_PORT", 1234);
 	
 	include('../includes/send_card.php');
 	
@@ -56,7 +56,7 @@
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);	// specify v3 for github api
 	
 	// set proxy options if applicable
-	if (PROXY_IP && PROXY_PORT) {
+	if (defined(PROXY_IP) && defined(PROXY_PORT)) {
 		curl_setopt($curl, CURLOPT_PROXY, PROXY_IP);
 		curl_setopt($curl, CURLOPT_PROXYPORT, PROXY_PORT);
 	}
